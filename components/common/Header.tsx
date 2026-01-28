@@ -20,17 +20,16 @@ export function Header() {
         >
           {LOGO_TEXT}
         </Link>
-        <Button
-          asChild
-          variant="ghost"
-          size="sm"
-          className="text-muted-foreground hover:text-foreground"
-        >
-          <Link href="/dashboard/preferences">
+        <Link href="/dashboard/preferences">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="text-muted-foreground hover:text-foreground"
+          >
             <Settings className="w-4 h-4 mr-2" />
             Preferences
-          </Link>
-        </Button>
+          </Button>
+        </Link>
       </div>
     </header>
   );

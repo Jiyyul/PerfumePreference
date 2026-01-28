@@ -2,6 +2,20 @@ import { createServerClient } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
 
 export async function middleware(request: NextRequest) {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+  // 개발 환경에서 Supabase env가 아직 없는 경우,
+  // 미들웨어가 크래시되지 않도록 요청을 그대로 통과시킨다.
+  // (env가 존재할 때만 기존 인증/보안 로직을 수행)
+  if (!supabaseUrl || !supabaseAnonKey) {
+    return NextResponse.next({
+      request: {
+        headers: request.headers,
+      },
+    });
+  }
+
   // Supabase 클라이언트 생성 (미들웨어용)
   let response = NextResponse.next({
     request: {
@@ -10,8 +24,8 @@ export async function middleware(request: NextRequest) {
   });
 
   const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    supabaseUrl,
+    supabaseAnonKey,
     {
       cookies: {
         getAll() {
