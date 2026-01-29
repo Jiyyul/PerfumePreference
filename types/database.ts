@@ -17,6 +17,9 @@ export type Json =
 
 export interface Database {
   public: {
+    Enums: {
+      recommendation_verdict: 'recommend' | 'not_recommend';
+    };
     Tables: {
       profiles: {
         Row: {
@@ -46,9 +49,12 @@ export interface Database {
           id: string;
           user_id: string;
           name: string;
-          notes: string[];
-          family: string | null;
-          mood: string | null;
+          brand: string;
+          notes_top: string[];
+          notes_middle: string[];
+          notes_base: string[];
+          family: string;
+          mood: string;
           usage_context: string[] | null;
           created_at: string;
           updated_at: string;
@@ -57,9 +63,12 @@ export interface Database {
           id?: string;
           user_id: string;
           name: string;
-          notes?: string[];
-          family?: string | null;
-          mood?: string | null;
+          brand: string;
+          notes_top?: string[];
+          notes_middle?: string[];
+          notes_base?: string[];
+          family: string;
+          mood: string;
           usage_context?: string[] | null;
           created_at?: string;
           updated_at?: string;
@@ -68,9 +77,12 @@ export interface Database {
           id?: string;
           user_id?: string;
           name?: string;
-          notes?: string[];
-          family?: string | null;
-          mood?: string | null;
+          brand?: string;
+          notes_top?: string[];
+          notes_middle?: string[];
+          notes_base?: string[];
+          family?: string;
+          mood?: string;
           usage_context?: string[] | null;
           created_at?: string;
           updated_at?: string;
@@ -110,24 +122,33 @@ export interface Database {
           id: string;
           user_id: string;
           user_perfume_id: string;
-          verdict: 'recommend' | 'not_recommend';
+          verdict: Database['public']['Enums']['recommendation_verdict'];
           score: number;
+          reasons: string[];
+          rule_version: string;
+          input_snapshot: Json;
           created_at: string;
         };
         Insert: {
           id?: string;
           user_id: string;
           user_perfume_id: string;
-          verdict: 'recommend' | 'not_recommend';
+          verdict: Database['public']['Enums']['recommendation_verdict'];
           score: number;
+          reasons?: string[];
+          rule_version?: string;
+          input_snapshot?: Json;
           created_at?: string;
         };
         Update: {
           id?: string;
           user_id?: string;
           user_perfume_id?: string;
-          verdict?: 'recommend' | 'not_recommend';
+          verdict?: Database['public']['Enums']['recommendation_verdict'];
           score?: number;
+          reasons?: string[];
+          rule_version?: string;
+          input_snapshot?: Json;
           created_at?: string;
         };
       };
@@ -135,22 +156,28 @@ export interface Database {
         Row: {
           id: string;
           recommendation_result_id: string;
-          explanation_text: string;
+          summary_text: string;
+          full_text: string | null;
           model: string | null;
+          prompt_version: string | null;
           created_at: string;
         };
         Insert: {
           id?: string;
           recommendation_result_id: string;
-          explanation_text: string;
+          summary_text: string;
+          full_text?: string | null;
           model?: string | null;
+          prompt_version?: string | null;
           created_at?: string;
         };
         Update: {
           id?: string;
           recommendation_result_id?: string;
-          explanation_text?: string;
+          summary_text?: string;
+          full_text?: string | null;
           model?: string | null;
+          prompt_version?: string | null;
           created_at?: string;
         };
       };

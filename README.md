@@ -9,9 +9,10 @@
 - **Backend:** Supabase (PostgreSQL, Auth, Storage)
 - **AI:** OpenAI / Google Gemini API
 
-📁 **프로젝트 구조**`
 
+## 📁 프로젝트 구조
 
+```text
 perfume-ai/
 ├── app/                     # Next.js App Router
 │   ├── (auth)/              # 인증 관련 라우트
@@ -28,18 +29,19 @@ perfume-ai/
 ├── hooks/                   # 커스텀 훅
 ├── types/                   # TypeScript 타입 정의
 └── docs/                    # 문서
-├── tech-stack.md        # 기술 명세서
-└── db-schema.md         # 데이터베이스 설계 가이드
+    ├── tech-stack.md        # 기술 명세서
+    └── db-schema.md         # 데이터베이스 설계 가이드
+```
 
-````
 
-🛠️ **시작하기**
-1. **의존성 설치**
+## 시작하기
+### 1. **의존성 설치**
+
 ```bash
 pnpm install
-````
+```
 
-2. **환경 변수 설정**
+### 2. **환경 변수 설정**
    `.env.local.example`을 참고하여 `.env.local` 파일 생성 후 다음 변수 설정:
 
 ```
@@ -49,13 +51,13 @@ OPENAI_API_KEY=your_openai_api_key
 GEMINI_API_KEY=your_gemini_api_key
 ```
 
-3. **Supabase 설정**
+### 3. **Supabase 설정**
 
 * 새 프로젝트 생성
 * `docs/db-schema.md` 참고하여 데이터베이스 스키마 생성
 * Google OAuth 제공자 설정 (인증 > 제공자 > Google)
 
-4. **개발 서버 실행**
+### 4. **개발 서버 실행**
 
 ```bash
 pnpm dev
@@ -87,7 +89,7 @@ npx supabase gen types typescript --project-id <project-id> > types/database.ts
   * 컴포넌트: PascalCase
   * 함수/변수: camelCase
 
-📝 **Phase 1 구현 목표**
+## 📝 **Phase 1 구현 목표**
 
 * 프로젝트 구조 설계
 * Supabase 인증 (Google OAuth)
@@ -105,10 +107,3 @@ npx supabase gen types typescript --project-id <project-id> > types/database.ts
 📄 **라이선스**
 MIT
 
-```
-
-이거 그대로 `README.md`에 덮어쓰면 바로 적용됩니다.  
-
-원하면 제가 여기서 **조금 더 보기 좋게 이미지/아이콘 참고 포함한 버전**으로도 만들어 드릴 수 있어요.  
-혹시 그 버전도 원하시나요?
-```
