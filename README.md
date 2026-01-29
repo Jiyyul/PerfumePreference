@@ -1,5 +1,4 @@
 
-```markdown
 # Perfume AI
 향수를 구조화된 데이터로 분석하고, AI가 추천 결과를 설명해주는 웹 기반 향수 정리·추천 서비스
 
@@ -10,8 +9,8 @@
 - **Backend:** Supabase (PostgreSQL, Auth, Storage)
 - **AI:** OpenAI / Google Gemini API
 
-📁 **프로젝트 구조**
-```
+📁 **프로젝트 구조**`
+
 
 perfume-ai/
 ├── app/                     # Next.js App Router
