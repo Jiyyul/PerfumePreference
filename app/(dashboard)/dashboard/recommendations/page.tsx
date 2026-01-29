@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
+import Link from 'next/link';
 import { RecommendationResultCard } from '@/components/recommendation/RecommendationResultCard';
 import { GenerateRecommendationsButton } from '@/components/recommendation/GenerateRecommendationsButton';
 import type { RecommendationWithPerfume } from '@/types/api';
@@ -90,20 +91,20 @@ export default async function RecommendationsPage() {
           </ul>
           <div className="mt-4 space-x-3">
             {!preferences && (
-              <a
+              <Link
                 href="/dashboard/preferences"
                 className="inline-block px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
               >
                 취향 설정하기
-              </a>
+              </Link>
             )}
             {(!perfumes || perfumes.length === 0) && (
-              <a
+              <Link
                 href="/dashboard/perfumes/new"
                 className="inline-block px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
               >
                 향수 추가하기
-              </a>
+              </Link>
             )}
           </div>
         </div>

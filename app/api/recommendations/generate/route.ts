@@ -1,5 +1,5 @@
 import { requireUser } from '@/app/api/_shared/auth';
-import { ok, badRequest, notFound, serverError, unauthorized } from '@/app/api/_shared/response';
+import { ok, notFound, serverError, unauthorized } from '@/app/api/_shared/response';
 import { calculateRecommendation } from '@/lib/recommendation-engine';
 import type { Database } from '@/types/database';
 import type { RecommendationGenerateResponse } from '@/types/api';

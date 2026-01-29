@@ -8,14 +8,14 @@ PRD·FLOW 기반 **향수 취향 분석 및 AI 추천 설명 서비스** 프로�
 
 | 영역 | 기술 | 버전 | 용도 |
 |------|------|------|------|
-| Framework | Next.js | 15+ (App Router) | SSR, 라우팅, API Routes |
-| Runtime | React | 19.x | UI |
-| Language | TypeScript | 5.x | 타입 안정성 |
+| Framework | Next.js | 16.1.6 (App Router) | SSR, 라우팅, API Routes |
+| Runtime | React | 19.2.3 | UI |
+| Language | TypeScript | 5.9.3 | 타입 안정성 |
 | Backend | Supabase | - | Auth, PostgreSQL, Realtime |
-| Styling | Tailwind CSS | 4.x | 유틸리티 기반 스타일 |
+| Styling | Tailwind CSS | 4.1.18 | 유틸리티 기반 스타일 |
 | UI Components | shadcn/ui | - | 공통 UI 프리미티브 |
-| Icons | Lucide React | - | 아이콘 |
-| Validation | Zod | - | 폼·API 스키마 검증 |
+| Icons | Lucide React | 0.400.0 | 아이콘 |
+| Validation | Zod | 3.25.76 | 폼·API 스키마 검증 |
 
 ---
 

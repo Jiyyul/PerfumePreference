@@ -52,10 +52,13 @@ auth.users (Supabase 관리)
 | `id` | `uuid` | PK, DEFAULT gen_random_uuid() | |
 | `user_id` | `uuid` | FK → `profiles.id`, NOT NULL | 소유자 |
 | `name` | `text` | NOT NULL | 향수 이름 |
-| `notes` | `text[]` | | 주요 노트 목록 |
-| `family` | `text` | | 계열 (e.g. 플로럴, 오리엔탈) |
-| `mood` | `text` | | 분위기 |
-| `usage_context` | `text[]` | | 사용 상황 (선택) |
+| `brand` | `text` | NOT NULL | 브랜드명 |
+| `notes_top` | `text[]` | DEFAULT '{}', NOT NULL | 탑 노트 (첫인상) |
+| `notes_middle` | `text[]` | DEFAULT '{}', NOT NULL | 미들 노트 (본향) |
+| `notes_base` | `text[]` | DEFAULT '{}', NOT NULL | 베이스 노트 (잔향) |
+| `family` | `text` | NOT NULL | 계열 (e.g. Fresh, Woody, Floral) |
+| `mood` | `text` | NOT NULL | 분위기 (e.g. Professional, Romantic) |
+| `usage_context` | `text[]` | | 사용 상황 (e.g. daily, work, evening) |
 | `created_at` | `timestamptz` | DEFAULT now() | |
 | `updated_at` | `timestamptz` | DEFAULT now() | |
 
@@ -84,11 +87,15 @@ auth.users (Supabase 관리)
 | `id` | `uuid` | PK, DEFAULT gen_random_uuid() | |
 | `user_id` | `uuid` | FK → `profiles.id`, NOT NULL | |
 | `user_perfume_id` | `uuid` | FK → `user_perfumes.id`, NOT NULL | 대상 향수 |
-| `verdict` | `text` | CHECK IN ('recommend','not_recommend'), NOT NULL | |
-| `score` | `numeric(5,2)` | | 규칙 엔진 점수 |
+| `verdict` | `recommendation_verdict` | ENUM, NOT NULL | 'recommend' or 'not_recommend' |
+| `score` | `numeric(6,2)` | NOT NULL | 규칙 엔진 점수 |
+| `reasons` | `text[]` | DEFAULT '{}', NOT NULL | 판정 근거 목록 |
+| `rule_version` | `text` | DEFAULT 'v1', NOT NULL | 규칙 버전 |
+| `input_snapshot` | `jsonb` | DEFAULT '{}', NOT NULL | 입력 데이터 스냅샷 |
 | `created_at` | `timestamptz` | DEFAULT now() | 실행 시각 |
 
-- 동일 (user, user_perfume)에 대해 실행 시점별 다수 행 가능.  
+**특징:**
+- 동일 (user, user_perfume)에 대해 실행 시점별 다수 행 가능 (히스토리 보존)  
   “최신 결과”는 `created_at` DESC로 조회.
 
 ### 3.5 `ai_explanations`
@@ -99,8 +106,10 @@ auth.users (Supabase 관리)
 |------|------|------|------|
 | `id` | `uuid` | PK, DEFAULT gen_random_uuid() | |
 | `recommendation_result_id` | `uuid` | FK → `recommendation_results.id`, UNIQUE, NOT NULL | |
-| `explanation_text` | `text` | NOT NULL | 자연어 설명 |
-| `model` | `text` | | 사용된 AI 모델 (선택) |
+| `summary_text` | `text` | NOT NULL | 간략 설명 (카드 UI용) |
+| `full_text` | `text` | | 상세 설명 (전체 페이지용) |
+| `model` | `text` | | 사용된 AI 모델 (e.g. gpt-4) |
+| `prompt_version` | `text` | | 프롬프트 버전 (재현성) |
 | `created_at` | `timestamptz` | DEFAULT now() | |
 
 ---

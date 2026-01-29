@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import { createClient } from '@/lib/supabase/client';
-import type { Database } from '@/types/database';
 import type { RecommendationWithPerfume, RecommendationGenerateResponse } from '@/types/api';
 
 /**
@@ -26,7 +25,7 @@ export function useRecommendations() {
     setError(null);
 
     try {
-      const supabase = createClient<Database>();
+      const supabase = createClient();
 
       const { data, error: fetchError } = await supabase
         .from('recommendation_results')

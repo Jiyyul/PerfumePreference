@@ -105,7 +105,7 @@ export function calculateRecommendation(
   };
 
   const preferredFamilies = Object.entries(familyMap)
-    .filter(([_, notes]) =>
+    .filter(([, notes]) =>
       userPreferences.preferredNotes.some((pref) =>
         notes.some((n) => n.toLowerCase() === pref.toLowerCase())
       )

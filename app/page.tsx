@@ -4,7 +4,6 @@ import { useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { PerfumeCard, type PerfumeCardPerfume } from "@/components/perfumes/PerfumeCard";
-import { RecommendationResultCard } from "@/components/recommendation/RecommendationResultCard";
 import { ArrowLeft, ArrowRight, Check, X } from "lucide-react";
 
 export default function Home() {
@@ -147,7 +146,21 @@ export default function Home() {
             </button>
           </div>
 
-          <RecommendationResultCard perfume={selectedPerfume} />
+          {/* 임시로 향수 정보만 표시 - 실제 추천 데이터는 /dashboard/recommendations에서 처리 */}
+          <div className="mb-8">
+            <h1 className="mb-4 font-serif text-3xl font-medium text-foreground">
+              {selectedPerfume.name}
+            </h1>
+            <Badge
+              className={
+                selectedPerfume.isRecommended
+                  ? "bg-foreground text-background"
+                  : "bg-muted text-muted-foreground"
+              }
+            >
+              {selectedPerfume.isRecommended ? "Recommended" : "Not for you"}
+            </Badge>
+          </div>
 
           <section className="flex flex-col items-center justify-between gap-4 border-t border-border pt-8 sm:flex-row">
             <Button

@@ -25,6 +25,16 @@
   - `hooks/use-perfumes.ts`, `hooks/use-preferences.ts`: API 호출 래퍼
   - 권한 경계: `requireUser()` + RLS 이중 보호
   - profiles 부트스트랩: `ensureProfileRow()` (FK 제약 대비)
+- **추천 엔진** ✅ **완료 (Step 3, 2026-01-29)**:
+  - `lib/recommendation-engine.ts`: 규칙 기반 추천 로직 (verdict, score, reasons)
+  - `app/api/recommendations/generate/route.ts`: 추천 생성 API (배치 처리)
+  - `hooks/use-recommendations.ts`: 추천 결과 조회 및 생성 훅
+  - `app/(dashboard)/dashboard/recommendations/page.tsx`: 추천 결과 페이지
+- **빌드 안정화** ✅ **완료 (2026-01-29)**:
+  - TypeScript/ESLint 오류 수정
+  - Unused imports/variables 정리
+  - 환경 변수 포맷 개선
+  - 프로덕션 빌드 검증 완료 (17 routes)
 - **DB 스키마**: `supabase/migrations/20260129_000001_schema_v1.sql`에 `profiles`, `user_preferences`, `user_perfumes`, `recommendation_results`, `ai_explanations` + RLS 정책 존재.
 
 ## 구현 로드맵 (권장 실행 순서)

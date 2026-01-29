@@ -546,7 +546,7 @@ const { data, error } = await supabase
 - ✅ `hooks/use-auth.ts` - 인증 및 프로필 관리 (user + profile 조회, signIn/Out)
 - ✅ `hooks/use-perfumes.ts` - 향수 데이터 관리 (list, add, update, delete)
 - ✅ `hooks/use-preferences.ts` - 취향 데이터 관리 (get, update)
-- [ ] `hooks/use-recommendations.ts` - 추천 결과 및 AI 설명 관리
+- ✅ `hooks/use-recommendations.ts` - 추천 결과 조회 및 생성 (fetch, generate)
 
 ### API Routes
 - ✅ `app/api/perfumes/route.ts` - 향수 CRUD (GET list, POST create)
@@ -554,8 +554,8 @@ const { data, error } = await supabase
 - ✅ `app/api/preferences/route.ts` - 취향 UPSERT (GET current, PUT upsert)
 - ✅ `app/api/_shared/auth.ts` - 권한 헬퍼 (requireUser, ensureProfileRow)
 - ✅ `app/api/_shared/response.ts` - API 응답 헬퍼
-- [ ] `app/api/recommendations/generate/route.ts` - 추천 생성 (배치)
-- [ ] `app/api/explanations/generate/route.ts` - AI 설명 생성 (배치)
+- ✅ `app/api/recommendations/generate/route.ts` - 추천 생성 (배치)
+- [ ] `app/api/explanations/generate/route.ts` - AI 설명 생성 (배치, F5에서 구현 예정)
 
 ### 타입 정의
 - `types/database.ts` - Supabase DB 타입
@@ -567,5 +567,7 @@ const { data, error } = await supabase
 - ✅ Step 1: Auth (Google OAuth + /callback 세션 교환)
 - ✅ F1: 사용자 프로필 조회 (hooks/use-auth에서 profiles 테이블 조회)
 - ✅ Step 2: Perfume/Preference CRUD API Routes + hooks 연결 (F2/F3)
+- ✅ F4: 규칙 기반 추천 엔진 구현 및 추천 결과 생성 API
+- ✅ Build Stabilization: TypeScript/ESLint 오류 수정, 빌드 안정화 (2026-01-29)
 
-**다음 단계:** Step 3 - 추천 엔진/AI 설명 생성 API (Phase 2)
+**다음 단계:** F5 - AI 설명 생성 모듈 및 API 구현 (Phase 2)

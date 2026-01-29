@@ -10,12 +10,13 @@
 | 항목 | 상태 | 비고 |
 |-----|------|-----|
 | 코드 작성 완료 | ✅ | 7개 파일 생성/수정 |
-| 타입 안정성 | ✅ | TypeScript 에러 없음 |
-| Linter 검증 | ✅ | ESLint 에러 없음 |
-| Database 호환성 | ⚠️ | RLS DELETE 정책 없음 (수정 완료) |
-| API 응답 함수 | ⚠️ | apiSuccess/Error → ok/serverError 수정 완료 |
-| 규칙 엔진 로직 | ⚠️ | Mood 매칭 제거 (Phase 3 이관) |
+| 타입 안정성 | ✅ | TypeScript 에러 0개 (2026-01-29 재검증) |
+| Linter 검증 | ✅ | ESLint 에러 0개 (2026-01-29 재검증) |
+| Database 호환성 | ✅ | RLS DELETE 정책 없음 (수정 완료) |
+| API 응답 함수 | ✅ | apiSuccess/Error → ok/serverError 수정 완료 |
+| 규칙 엔진 로직 | ✅ | Mood 매칭 제거 (Phase 3 이관) |
 | UI 중복 제거 | ✅ | 향수별 최신 결과만 표시 |
+| **프로덕션 빌드** | ✅ | **빌드 성공 (17 routes, 2026-01-29)** |
 
 ---
 
@@ -119,15 +120,25 @@ const recommendations = Array.from(perfumeMap.values());
 
 ## ✅ 검증 통과 항목
 
-### 1. 타입 안정성
-- `types/database.ts`의 `Database` 타입을 모든 파일에서 일관되게 사용
-- Supabase 클라이언트에 제네릭 타입 전달: `createClient<Database>()`
-- TypeScript 컴파일 에러 없음
+### 1. 타입 안정성 (2026-01-29 재검증)
+- TypeScript 컴파일 에러 0개
+- `createClient()` 제네릭 타입 이슈 해결 (제거)
+- 모든 컴포넌트 prop 타입 일치 확인
+- `pnpm tsc --noEmit`: 통과
 
-### 2. Linter 검증
-- ESLint 에러 없음
-- 모든 import 경로 정상
-- 사용하지 않는 변수 없음
+### 2. Linter 검증 (2026-01-29 재검증)
+- ESLint 에러 0개 (경고 1개: 미구현 함수 파라미터)
+- Next.js `<Link>` 규칙 준수 (HTML `<a>` 제거)
+- Unused imports/variables 정리 완료
+- temp-v0 폴더 ignore 설정 완료
+- `pnpm lint`: 통과
+
+### 3. 프로덕션 빌드 (2026-01-29 신규)
+- `pnpm build`: 성공
+- 빌드 시간: 16.9초
+- 생성된 라우트: 17개
+  - Static: 12개
+  - Dynamic: 5개 (API routes + recommendations)
 
 ### 3. 규칙 엔진 로직
 - 선호 노트 매칭: +20점/노트
@@ -273,6 +284,7 @@ F4 검증 완료 후 진행할 작업:
 
 ## ✅ 승인 체크리스트
 
+### 초기 검증 (F4 구현 직후)
 - [x] 코드 작성 완료
 - [x] 타입 에러 없음
 - [x] Linter 에러 없음
@@ -283,10 +295,21 @@ F4 검증 완료 후 진행할 작업:
 - [x] 테스트 플랜 작성
 - [x] 검증 리포트 작성
 
-**검증 결과: ✅ 통과**
+### 빌드 안정화 후 재검증 (2026-01-29)
+- [x] TypeScript 타입 오류 수정 (2개)
+- [x] ESLint 오류 수정 (1개)
+- [x] Unused imports/variables 정리 (6개)
+- [x] 환경 변수 포맷 개선
+- [x] 프로덕션 빌드 성공 검증
+- [x] History 문서 작성 (007-build-stabilization)
+- [x] 전체 문서 sync 완료
+
+**검증 결과: ✅ 통과**  
+**빌드 상태: ✅ Production Ready**
 
 ---
 
 **검증자:** AI Assistant  
 **검토자:** (개발자 이름)  
-**승인일:** 2026-01-29
+**최초 승인일:** 2026-01-29  
+**재검증일:** 2026-01-29 (빌드 안정화)

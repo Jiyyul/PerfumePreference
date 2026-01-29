@@ -69,6 +69,24 @@ pnpm dev
 > Supabase 환경 변수가 설정되면 로그인 버튼은 **Google OAuth → `/callback`(route handler) → 세션 교환 → `/dashboard`** 흐름으로 동작합니다.  
 > `/callback`은 UI 페이지가 아니라 **OAuth code→session 교환을 수행하는 Route Handler** 입니다. (`app/(auth)/callback/route.ts`)
 
+### 5. **프로덕션 빌드**
+
+```bash
+# 타입 체크
+pnpm tsc --noEmit
+
+# ESLint 검사
+pnpm lint
+
+# 프로덕션 빌드
+pnpm build
+
+# 빌드 결과 실행
+pnpm start
+```
+
+**빌드 상태:** ✅ Production Ready (2026-01-29 검증 완료)
+
 📚 **문서**
 
 * 기술 스택 명세서 (`docs/tech-stack.md`)
@@ -93,14 +111,28 @@ npx supabase gen types typescript --project-id <project-id> > types/database.ts
   * 컴포넌트: PascalCase
   * 함수/변수: camelCase
 
-## 📝 **Phase 1 구현 목표**
+## 📝 **현재 구현 상태**
 
-* 프로젝트 구조 설계
-* Supabase 인증 (Google OAuth)
-* 사용자 프로필 관리 (향수 취향 등록/수정)
-* 향수 CRUD 및 AI 분석/추천
-* 대시보드 (추천 결과, 통계 카드, 최근 향수)
-* 상세 향수 페이지 (향수 특징, AI 설명)
+### Phase 1: Foundation ✅ 완료
+* ✅ 프로젝트 구조 설계
+* ✅ Supabase 인증 (Google OAuth + callback)
+* ✅ 사용자 프로필 관리 (profiles 테이블 조회)
+* ✅ 향수 CRUD (user_perfumes 테이블)
+* ✅ 취향 데이터 CRUD (user_preferences 테이블)
+* ✅ 규칙 기반 추천 엔진 구현 및 결과 저장
+
+### Phase 2: Core Business Logic 🚧 진행 중
+* ✅ 규칙 기반 추천 계산 (`lib/recommendation-engine.ts`)
+* ✅ 추천 결과 생성 API (`app/api/recommendations/generate/route.ts`)
+* ⏳ AI 설명 생성 모듈 (`lib/ai-explanation.ts` - 스켈레톤 존재)
+* ⏳ AI 설명 생성 API (향후 구현)
+* ⏳ 추천 결과 + AI 설명 통합 조회
+
+### Phase 3: Interaction & Error Handling 📋 예정
+* 에러 처리 및 검증
+* 로딩 상태 관리
+* 사용자 피드백 (Toast)
+* 데이터 갱신 최적화
 
 🔒 **보안**
 
