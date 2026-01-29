@@ -29,8 +29,9 @@ PRD·FLOW 기반 **향수 취향 분석 및 AI 추천 설명 서비스** 프로�
 
 ### 2.2 데이터·인프라
 
-- **@supabase/supabase-js**: 브라우저·서버 클라이언트 (`lib/supabase/`).
-- **@supabase/ssr**: Next.js App Router용 쿠키 기반 세션 (미들웨어·서버 컴포넌트).
+- **@supabase/ssr**: Next.js App Router 기준의 Supabase 연동 핵심.  
+  - 브라우저/서버 클라이언트 생성 (`lib/supabase/client.ts`, `lib/supabase/server.ts`)  
+  - 쿠키 기반 세션 유지 및 Route Handler에서 세션 검증/교환(`/callback`)에 사용
 
 ### 2.3 폼·검증
 

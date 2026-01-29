@@ -5,17 +5,17 @@ import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Settings } from "lucide-react";
-import { useMockAuth } from "@/lib/mock-auth";
+import { useAuth } from "@/hooks/use-auth";
 
 const LOGO_TEXT = "Scentory";
 
 export function Header() {
   const router = useRouter();
-  const { status, user, logout } = useMockAuth();
+  const { mode, user, profile, signOut } = useAuth();
 
   const handleLogout = () => {
-    logout();
-    router.push("/login");
+    void signOut();
+    router.push("/login"); // Supabase 모드에서도 UI 즉시 피드백
   };
 
   return (
@@ -33,16 +33,18 @@ export function Header() {
         <div className="flex items-center gap-3">
           <div className="hidden items-end gap-1 text-right sm:flex sm:flex-col">
             <p className="text-xs text-muted-foreground">
-              Dev Mode · Mock Login
+              {mode === "mock" ? "Dev Mode · Mock Login" : "Supabase Session"}
             </p>
-            {status === "authenticated" && user ? (
-              <p className="text-xs text-foreground">{user.email}</p>
+            {user ? (
+              <p className="text-xs text-foreground">
+                {profile?.display_name ?? user.email ?? 'User'}
+              </p>
             ) : (
               <p className="text-xs text-muted-foreground">Not signed in</p>
             )}
           </div>
 
-          {status === "authenticated" ? (
+          {user ? (
             <Button
               variant="outline"
               size="sm"

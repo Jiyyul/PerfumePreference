@@ -4,11 +4,22 @@
  * 취향 데이터 관리 커스텀 훅
  */
 export function usePreferences() {
-  // 선호/비선호 노트, 사용 상황 관리 로직 구현 예정
+  // TODO(Phase 3): 캐시/로딩 상태 고도화
   return {
     preferences: null,
     isLoading: false,
-    error: null,
-    updatePreferences: async () => {},
+    error: null as string | null,
+    getPreferences: async () => {
+      const res = await fetch('/api/preferences', { method: 'GET' });
+      return await res.json();
+    },
+    updatePreferences: async (input: unknown) => {
+      const res = await fetch('/api/preferences', {
+        method: 'PUT',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(input),
+      });
+      return await res.json();
+    },
   };
 }

@@ -3,7 +3,7 @@
 향수를 구조화된 데이터로 분석하고, AI가 추천 결과를 설명해주는 웹 기반 향수 정리·추천 서비스
 
 🚀 **기술 스택**
-- **Frontend:** Next.js 15 (App Router), React 19, TypeScript
+- **Frontend:** Next.js 16 (App Router), React 19, TypeScript
 - **Styling:** Tailwind CSS 4
 - **UI Components:** shadcn/ui
 - **Backend:** Supabase (PostgreSQL, Auth, Storage)
@@ -64,6 +64,10 @@ pnpm dev
 ```
 
 브라우저에서 [http://localhost:3000](http://localhost:3000) 확인
+
+> 참고: 개발 환경에서는 Supabase 환경 변수가 없을 경우 **Mock Login(Dev Mode)** 으로 동작합니다.  
+> Supabase 환경 변수가 설정되면 로그인 버튼은 **Google OAuth → `/callback`(route handler) → 세션 교환 → `/dashboard`** 흐름으로 동작합니다.  
+> `/callback`은 UI 페이지가 아니라 **OAuth code→session 교환을 수행하는 Route Handler** 입니다. (`app/(auth)/callback/route.ts`)
 
 📚 **문서**
 

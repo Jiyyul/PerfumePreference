@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Check } from "lucide-react";
+import { usePreferences } from "@/hooks/use-preferences";
 
 interface UserPreferences {
   preferredNotes: string[];
@@ -31,6 +32,7 @@ const situationOptions = [
 
 export default function PreferencesPage() {
   const router = useRouter();
+  const api = usePreferences();
 
   const [preferredNotes, setPreferredNotes] = useState<string[]>([]);
   const [dislikedNotes, setDislikedNotes] = useState<string[]>([]);
@@ -69,8 +71,12 @@ export default function PreferencesPage() {
       situations,
     };
 
-    // TODO: 이후 Supabase/규칙 엔진과 연동하여 영속 저장
-    console.log("Saved preferences (local only):", preferences);
+    // Step 2: 영속 저장 (UPSERT)
+    void api.updatePreferences({
+      preferred_notes: preferences.preferredNotes,
+      disliked_notes: preferences.dislikedNotes,
+      usage_context: preferences.situations,
+    });
 
     router.push("/dashboard");
   };

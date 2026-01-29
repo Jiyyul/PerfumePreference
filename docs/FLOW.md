@@ -7,8 +7,10 @@ sequenceDiagram
     participant AI as Generative AI API
 
     U->>FE: Google Login
-    FE->>BE: OAuth 인증 요청
-    BE-->>FE: 인증 토큰 반환
+    FE->>BE: OAuth 인증 요청 (redirect)
+    BE-->>FE: /callback로 code redirect
+    FE->>BE: /callback(route)에서 code→session 교환 + 쿠키 세션 설정
+    BE-->>FE: /dashboard로 redirect (세션 확립 완료)
 
     U->>FE: 보유 향수 등록
     FE->>BE: 향수 메타데이터 저장 (노트, 계열, 분위기)

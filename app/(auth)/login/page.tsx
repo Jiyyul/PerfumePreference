@@ -2,15 +2,17 @@
 
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { useMockAuth } from "@/lib/mock-auth";
+import { useAuth } from "@/hooks/use-auth";
 
 export default function LoginPage() {
   const router = useRouter();
-  const { status, user, loginWithMockGoogle } = useMockAuth();
+  const { mode, user, isLoading, signInWithGoogle } = useAuth();
 
   const handleGoogleLoginClick = () => {
-    loginWithMockGoogle();
-    router.push("/dashboard");
+    // Supabase 모드: OAuth redirect로 이동 (router push 불필요)
+    // Mock 모드: 즉시 로그인 후 대시보드로 이동
+    void signInWithGoogle();
+    if (mode === "mock") router.push("/dashboard");
   };
 
   return (
@@ -25,7 +27,9 @@ export default function LoginPage() {
             <span className="font-medium text-foreground">Mock Login</span>입니다.
           </p>
           <p className="mt-2 text-xs text-muted-foreground">
-            Dev Mode · No Supabase · No Google OAuth
+            {mode === "mock"
+              ? "Dev Mode · Mock Login (No Supabase)"
+              : "Supabase OAuth Enabled"}
           </p>
         </div>
 
@@ -33,6 +37,7 @@ export default function LoginPage() {
           <Button
             type="button"
             onClick={handleGoogleLoginClick}
+            disabled={isLoading}
             className="h-12 w-full bg-white text-neutral-900 hover:bg-neutral-50 border border-neutral-200"
           >
             <span className="mr-3 inline-flex h-5 w-5 items-center justify-center">
@@ -61,19 +66,31 @@ export default function LoginPage() {
 
           <div className="mt-4 rounded-lg bg-muted/40 p-3">
             <p className="text-xs text-muted-foreground">
-              로그인 버튼은 실제 OAuth 호출 없이{" "}
-              <span className="font-medium text-foreground">가짜 사용자 객체</span>를
-              생성합니다.
+              {mode === "mock" ? (
+                <>
+                  로그인 버튼은 실제 OAuth 호출 없이{" "}
+                  <span className="font-medium text-foreground">가짜 사용자 객체</span>를
+                  생성합니다.
+                </>
+              ) : (
+                <>
+                  로그인 버튼은 Supabase를 통해{" "}
+                  <span className="font-medium text-foreground">Google OAuth</span>로
+                  이동합니다.
+                </>
+              )}
             </p>
             <div className="mt-2 text-xs">
               <p className="text-muted-foreground">
-                상태:{" "}
-                <span className="font-medium text-foreground">{status}</span>
+                모드:{" "}
+                <span className="font-medium text-foreground">{mode}</span>
               </p>
               {user && (
                 <p className="text-muted-foreground">
                   사용자:{" "}
-                  <span className="font-medium text-foreground">{user.email}</span>
+                  <span className="font-medium text-foreground">
+                    {user.email ?? "(no email)"}
+                  </span>
                 </p>
               )}
             </div>
