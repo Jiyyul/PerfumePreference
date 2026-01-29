@@ -8,6 +8,12 @@ import type { Database } from '@/types/database';
 type AuthUser = {
   id: string;
   email?: string | null;
+  user_metadata?: {
+    avatar_url?: string;
+    picture?: string;
+    full_name?: string;
+    name?: string;
+  };
 };
 
 type Profile = Database['public']['Tables']['profiles']['Row'];
@@ -117,7 +123,7 @@ export function useAuth() {
       await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/callback`,
+          redirectTo: `${window.location.origin}/auth/callback`,
         },
       });
     },

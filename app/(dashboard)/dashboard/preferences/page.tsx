@@ -37,6 +37,8 @@ export default function PreferencesPage() {
   const [preferredNotes, setPreferredNotes] = useState<string[]>([]);
   const [dislikedNotes, setDislikedNotes] = useState<string[]>([]);
   const [situations, setSituations] = useState<string[]>([]);
+  const [isSaving, setIsSaving] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
 
   const toggleNote = (note: string, type: "preferred" | "disliked") => {
     if (type === "preferred") {
@@ -64,21 +66,42 @@ export default function PreferencesPage() {
     }
   };
 
-  const handleSave = () => {
-    const preferences: UserPreferences = {
-      preferredNotes,
-      dislikedNotes,
-      situations,
-    };
+  const handleSave = async () => {
+    setIsSaving(true);
+    setSaveError(null);
 
-    // Step 2: 영속 저장 (UPSERT)
-    void api.updatePreferences({
-      preferred_notes: preferences.preferredNotes,
-      disliked_notes: preferences.dislikedNotes,
-      usage_context: preferences.situations,
-    });
+    try {
+      const preferences: UserPreferences = {
+        preferredNotes,
+        dislikedNotes,
+        situations,
+      };
 
-    router.push("/dashboard");
+      // Step 2: 영속 저장 (UPSERT)
+      await api.updatePreferences({
+        preferred_notes: preferences.preferredNotes,
+        disliked_notes: preferences.dislikedNotes,
+        usage_context: preferences.situations,
+      });
+
+      // 저장 성공 - 추천 결과 페이지로 이동
+      router.push("/dashboard/recommendations");
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "저장에 실패했습니다";
+      setSaveError(message);
+      console.error("[PreferencesPage] Save error:", error);
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handleBack = () => {
+    // 브라우저 히스토리가 있으면 뒤로가기, 없으면 대시보드로
+    if (window.history.length > 1) {
+      router.back();
+    } else {
+      router.push("/dashboard");
+    }
   };
 
   const getNoteStatus = (note: string): "preferred" | "disliked" | "neutral" => {
@@ -93,7 +116,7 @@ export default function PreferencesPage() {
       <header className="sticky top-0 z-10 border-b border-border bg-card/50 backdrop-blur-sm">
         <div className="mx-auto flex max-w-3xl items-center justify-between px-6 py-4">
           <button
-            onClick={() => router.push("/dashboard")}
+            onClick={handleBack}
             className="flex items-center gap-2 text-muted-foreground transition-colors hover:text-foreground"
           >
             <ArrowLeft className="h-4 w-4" />
@@ -258,6 +281,13 @@ export default function PreferencesPage() {
 
         {/* Summary & Save */}
         <section className="border-t border-border pt-8">
+          {/* 에러 메시지 */}
+          {saveError && (
+            <div className="mb-4 rounded-lg bg-red-50 border border-red-200 p-4">
+              <p className="text-sm text-red-700">{saveError}</p>
+            </div>
+          )}
+
           <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
             <div className="text-sm text-muted-foreground">
               <span className="font-medium text-foreground">
@@ -276,9 +306,9 @@ export default function PreferencesPage() {
             <Button
               onClick={handleSave}
               className="bg-foreground text-background hover:bg-foreground/90"
-              disabled={preferredNotes.length === 0 && situations.length === 0}
+              disabled={isSaving || (preferredNotes.length === 0 && situations.length === 0)}
             >
-              Save Preferences
+              {isSaving ? "Saving..." : "Save Preferences"}
             </Button>
           </div>
         </section>

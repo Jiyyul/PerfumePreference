@@ -36,15 +36,25 @@ export default async function RecommendationsPage() {
     .eq('user_id', user.id)
     .order('created_at', { ascending: false });
 
-  // 타입 변환
-  const allRecommendations: RecommendationWithPerfume[] = (rawResults || []).map(
-    (item) => ({
-      ...item,
-      user_perfumes: Array.isArray(item.user_perfumes)
+  // 타입 변환 및 유효성 검증
+  const allRecommendations: RecommendationWithPerfume[] = (rawResults || [])
+    .map((item) => {
+      // user_perfumes가 배열인 경우 첫 번째 요소, 객체면 그대로 사용
+      const perfume = Array.isArray(item.user_perfumes)
         ? item.user_perfumes[0]
-        : item.user_perfumes,
+        : item.user_perfumes;
+
+      // perfume이 없으면 이 추천 결과는 무효
+      if (!perfume) {
+        return null;
+      }
+
+      return {
+        ...item,
+        user_perfumes: perfume,
+      } as RecommendationWithPerfume;
     })
-  ) as RecommendationWithPerfume[];
+    .filter((item): item is RecommendationWithPerfume => item !== null);
 
   // 향수별 최신 추천 결과만 필터링 (중복 제거)
   const perfumeMap = new Map<string, RecommendationWithPerfume>();
@@ -72,7 +82,17 @@ export default async function RecommendationsPage() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">추천 결과</h1>
+        <div className="flex items-center gap-4 mb-4">
+          <Link href="/dashboard">
+            <button className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+              <span className="text-sm">Dashboard로</span>
+            </button>
+          </Link>
+          <h1 className="text-3xl font-bold">추천 결과</h1>
+        </div>
         <p className="text-gray-600">
           규칙 기반 분석으로 생성된 향수 추천 결과입니다.
         </p>

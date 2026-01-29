@@ -20,6 +20,17 @@ export function RecommendationResultCard({ recommendation }: RecommendationResul
   const isRecommended = recommendation.verdict === 'recommend';
   const perfume = recommendation.user_perfumes;
 
+  // 향수 데이터 없으면 렌더링 중단 (안전 장치)
+  if (!perfume) {
+    return null;
+  }
+
+  // notes 안전 처리
+  const notesTop = perfume.notes_top || [];
+  const notesMiddle = perfume.notes_middle || [];
+  const notesBase = perfume.notes_base || [];
+  const reasons = recommendation.reasons || [];
+
   return (
     <Card className="p-6">
       <div className="flex items-start justify-between mb-4">
@@ -51,22 +62,22 @@ export function RecommendationResultCard({ recommendation }: RecommendationResul
 
       {/* 향수 노트 정보 */}
       <div className="mb-4 space-y-2 text-sm">
-        {perfume.notes_top.length > 0 && (
+        {notesTop.length > 0 && (
           <div>
             <span className="font-medium text-gray-700">Top: </span>
-            <span className="text-gray-600">{perfume.notes_top.join(', ')}</span>
+            <span className="text-gray-600">{notesTop.join(', ')}</span>
           </div>
         )}
-        {perfume.notes_middle.length > 0 && (
+        {notesMiddle.length > 0 && (
           <div>
             <span className="font-medium text-gray-700">Middle: </span>
-            <span className="text-gray-600">{perfume.notes_middle.join(', ')}</span>
+            <span className="text-gray-600">{notesMiddle.join(', ')}</span>
           </div>
         )}
-        {perfume.notes_base.length > 0 && (
+        {notesBase.length > 0 && (
           <div>
             <span className="font-medium text-gray-700">Base: </span>
-            <span className="text-gray-600">{perfume.notes_base.join(', ')}</span>
+            <span className="text-gray-600">{notesBase.join(', ')}</span>
           </div>
         )}
       </div>
@@ -74,14 +85,18 @@ export function RecommendationResultCard({ recommendation }: RecommendationResul
       {/* 추천 이유 (규칙 기반) */}
       <div className="border-t pt-4">
         <h3 className="text-sm font-semibold text-gray-700 mb-2">분석 근거</h3>
-        <ul className="space-y-1">
-          {recommendation.reasons.map((reason, idx) => (
-            <li key={idx} className="text-sm text-gray-600 flex items-start">
-              <span className="mr-2 text-gray-400">•</span>
-              <span>{reason}</span>
-            </li>
-          ))}
-        </ul>
+        {reasons.length > 0 ? (
+          <ul className="space-y-1">
+            {reasons.map((reason, idx) => (
+              <li key={idx} className="text-sm text-gray-600 flex items-start">
+                <span className="mr-2 text-gray-400">•</span>
+                <span>{reason}</span>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="text-sm text-gray-500">분석 근거 정보 없음</p>
+        )}
       </div>
 
       {/* 규칙 버전 표시 */}
