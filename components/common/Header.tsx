@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Settings } from "lucide-react";
+import { Settings, MessageCircle } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 
 const LOGO_TEXT = "Scentory";
@@ -29,9 +29,11 @@ export function Header() {
     }
 
     // Supabase user의 경우 user_metadata에서 가져오기
-    const metadata = user.user_metadata;
-    if (metadata?.avatar_url) return metadata.avatar_url;
-    if (metadata?.picture) return metadata.picture;
+    if ('user_metadata' in user && user.user_metadata) {
+      const metadata = user.user_metadata;
+      if (metadata?.avatar_url) return metadata.avatar_url;
+      if (metadata?.picture) return metadata.picture;
+    }
 
     // profiles 테이블의 avatar_url
     if (profile?.avatar_url) return profile.avatar_url;
@@ -51,11 +53,14 @@ export function Header() {
     }
 
     // Supabase user의 경우
-    const metadata = user.user_metadata;
-    if (metadata?.full_name) return metadata.full_name;
-    if (metadata?.name) return metadata.name;
+    if ('user_metadata' in user && user.user_metadata) {
+      const metadata = user.user_metadata;
+      if (metadata?.full_name) return metadata.full_name;
+      if (metadata?.name) return metadata.name;
+    }
+    
     if (profile?.display_name) return profile.display_name;
-    if (user.email) return user.email.split('@')[0];
+    if ('email' in user && user.email) return user.email.split('@')[0];
     return 'User';
   };
 
@@ -112,6 +117,20 @@ export function Header() {
             <Link href="/login">
               <Button variant="outline" size="sm" className="text-xs">
                 Login
+              </Button>
+            </Link>
+          )}
+
+          {/* AI 챗봇 메뉴 */}
+          {user && (
+            <Link href="/chat">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-muted-foreground hover:text-foreground"
+              >
+                <MessageCircle className="w-4 h-4 mr-2" />
+                AI 챗봇
               </Button>
             </Link>
           )}
