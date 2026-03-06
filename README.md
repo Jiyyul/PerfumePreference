@@ -6,6 +6,8 @@ Scentory는 향수 추천 결과보다 **설명 가능성과 납득 가능성**�
 규칙 기반 로직으로 일관성과 재현성을 확보하고, 생성형 AI는 판단이 아닌 **설명만** 담당합니다.
 
 ---
+https://perfume-preference.vercel.app/
+---
 
 ## 🎯 서비스 핵심 철학
 
@@ -345,18 +347,6 @@ pnpm build
 3. 기능 추가 시 `docs/history/` 문서 작성
 4. 타입 안정성 유지 (TypeScript strict mode)
 5. RLS 정책 준수
-
----
-
-## 📄 라이선스
-
-MIT License
-
----
-
-## 📞 문의
-
-프로젝트 관련 문의는 Repository Issues를 이용해주세요.
 
 ---
 
